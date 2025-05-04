@@ -46,13 +46,13 @@
   </header>
 
   <section class="hero">
-  	<img src="${pageContext.request.contextPath}/Photos/model1.jpg" alt="Model1" class ="hero-img">
+  	<img src="${pageContext.request.contextPath}/Resources/images/model1.jpg" alt="Model1" class ="hero-img">
     <div class="hero-text">
       <h2>Make your <br />Fashion <br />look</h2>
       <p>More Charming</p>
       <button>Explore</button>
     </div>
-    <img src="${pageContext.request.contextPath}/Photos/model2.jpg" alt="Model 2" class ="hero-img">
+    <img src="${pageContext.request.contextPath}/Resources/images/model2.jpg" alt="Model 2" class ="hero-img">
   </section>
 
   <footer class="footer">

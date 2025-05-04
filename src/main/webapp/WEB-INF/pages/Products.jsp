@@ -51,7 +51,7 @@
       <div class="product-grid">
         <div class="product-card">
           <a href="product_detail.html">
-            <img src="./tshirt.png" alt="Cotton T-Shirt" />
+            <img src="Resources/images/tshirt.png" alt="Cotton T-Shirt" />
             <div class="product-info">
               <h3>Cotton T-Shirt</h3>
               <p class="price">$24.99</p>
@@ -61,7 +61,7 @@
 
         <div class="product-card">
           <a href="product_detail.html">
-            <img src="./pant.webp" alt="Linen Pants" />
+            <img src="Resources/images/pant.webp" alt="Linen Pants" />
             <div class="product-info">
               <h3>Linen Pants</h3>
               <p class="price">$59.99</p>

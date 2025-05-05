@@ -1,28 +1,44 @@
 package com.Threads.model;
 
+import java.util.Objects;
+
 /**
- * Represents a user in the system.
+ * Represents a user in the Threads&Co system.
  */
 public class UserModel {
+
     private int userId;
     private String role;
     private String userName;
-    private String userPassword;
+
+    // Do NOT serialize password if session serialization occurs
+    private transient String userPassword;
+
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
     private String address;
 
+    /**
+     * Default constructor.
+     */
     public UserModel() {}
 
-    // Constructor for login
+    /**
+     * Constructor used for login operations.
+     *
+     * @param userName     username entered
+     * @param userPassword password entered
+     */
     public UserModel(String userName, String userPassword) {
         this.userName = userName;
         this.userPassword = userPassword;
     }
 
-    // Full constructor
+    /**
+     * Full constructor with all fields.
+     */
     public UserModel(int userId, String role, String userName, String userPassword,
                      String firstName, String lastName, String email,
                      String phoneNumber, String address) {
@@ -38,7 +54,6 @@ public class UserModel {
     }
 
     // Getters and Setters
-
     public int getUserId() {
         return userId;
     }
@@ -109,5 +124,34 @@ public class UserModel {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "userId=" + userId +
+                ", role='" + role + '\'' +
+                ", userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserModel)) return false;
+        UserModel user = (UserModel) o;
+        return userId == user.userId &&
+                Objects.equals(userName, user.userName) &&
+                Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, userName, email);
     }
 }

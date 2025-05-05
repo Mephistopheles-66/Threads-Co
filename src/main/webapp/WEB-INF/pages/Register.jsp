@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <a href="<%= request.getContextPath() %>/pages/home.jsp">
+    <a href="${pageContext.request.contextPath}/home.jsp">>
         <div class="logo">Threads & Co.</div>
     </a>
 

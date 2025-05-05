@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="login-box">
-	<a href="<%= request.getContextPath() %>/pages/home.jsp"><div class="logo">Threads & Co.</div></a>
+	<a href="${pageContext.request.contextPath}/home.jsp"><div class="logo">Threads & Co.</div></a>
     <form>
         <h3>Login</h3>
         <img src="">
@@ -21,7 +21,6 @@
         <input type="password" placeholder="Password" id="password">
 
         <button>Log In</button>
-        
     </form>
 </body>
 </html>

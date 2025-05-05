@@ -23,14 +23,16 @@ public class AuthenticationFilter implements Filter {
     private static final String HOME = "/home";
     private static final String ROOT = "/";
     private static final String DASHBOARD = "/dashboard";
-    private static final String MODIFY_STUDENTS = "/modifyStudents";
-    private static final String STUDENT_UPDATE = "/studentUpdate";
-    private static final String ADMIN_ORDER = "/adminOrder";
-    private static final String ABOUT = "/about";
-    private static final String PORTFOLIO = "/portfolio";
-    private static final String CONTACT = "/contact";
-    private static final String ORDER_LIST = "/orderlist";
-    private static final String CART_LIST = "/cartlist";
+    private static final String ADD_NEW_PRODUCT = "/addnewProduct";
+    private static final String PRODUCT_LIST = "/ProductList";
+    private static final String RECENT_ORDERS = "/RecentOrders";
+    private static final String ABOUT_US = "/aboutus";
+    private static final String CONTACT_US = "/contactus";
+    private static final String FOUNDATION = "/foundation";
+    private static final String PRODUCT_DETAILS = "/ProductDetails";
+    private static final String PRODUCTS = "/Products";
+    private static final String TERMS = "/terms";
+    private static final String USER_PROFILE = "/userprofile";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -46,46 +48,53 @@ public class AuthenticationFilter implements Filter {
 
         String uri = req.getRequestURI();
         
-        // Allow access to resources (images, CSS, JS, etc.)
+        // Allow access to resources like images, CSS, JS, etc.
         if (uri.endsWith(".png") || uri.endsWith(".jpg") || uri.endsWith(".css") || uri.endsWith(".js")) {
             chain.doFilter(request, response);
             return;
         }
-        
-        boolean isLoggedIn = SessionUtil.getAttribute(req, "username") != null;
-        String userRole = CookieUtil.getCookie(req, "role"); // Get the user role directly (no .getValue() needed)
 
-        if ("admin".equals(userRole)) {
-            // Admin is logged in
-            if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
-                res.sendRedirect(req.getContextPath() + DASHBOARD);
-            } else if (uri.endsWith(DASHBOARD) || uri.endsWith(MODIFY_STUDENTS) || uri.endsWith(STUDENT_UPDATE)
-                    || uri.endsWith(ADMIN_ORDER) || uri.endsWith(HOME) || uri.endsWith(ROOT)) {
-                chain.doFilter(request, response);
-            } else if (uri.endsWith(ORDER_LIST) || uri.endsWith(CART_LIST)) {
-                res.sendRedirect(req.getContextPath() + DASHBOARD);
+        // Retrieve session data and cookie for role
+        String sessionUsername = (String) SessionUtil.getAttribute(req, "username");
+        String userRole = CookieUtil.getCookie(req, "role"); // Get the user role from cookie
+
+        if (sessionUsername != null) {
+            // User is logged in, based on role, we proceed accordingly.
+            if ("admin".equals(userRole)) {
+                // Admin is logged in
+                if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
+                    res.sendRedirect(req.getContextPath() + DASHBOARD); // Redirect to Dashboard
+                } else if (uri.endsWith(DASHBOARD) || uri.endsWith(ADD_NEW_PRODUCT) || uri.endsWith(PRODUCT_LIST)
+                        || uri.endsWith(RECENT_ORDERS) || uri.endsWith(PRODUCT_DETAILS) || uri.endsWith(PRODUCTS)) {
+                    chain.doFilter(request, response); // Allow access to admin pages
+                } else if (uri.endsWith(ABOUT_US) || uri.endsWith(CONTACT_US) || uri.endsWith(FOUNDATION)
+                        || uri.endsWith(TERMS)) {
+                    chain.doFilter(request, response); // Admin can access public pages
+                } else {
+                    res.sendRedirect(req.getContextPath() + DASHBOARD); // Redirect any unknown pages to dashboard
+                }
+            } else if ("user".equals(userRole)) {
+                // User is logged in
+                if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
+                    res.sendRedirect(req.getContextPath() + HOME); // Redirect to home page if already logged in
+                } else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT_US) || uri.endsWith(CONTACT_US)
+                        || uri.endsWith(FOUNDATION) || uri.endsWith(PRODUCTS) || uri.endsWith(PRODUCT_DETAILS)) {
+                    chain.doFilter(request, response); // Allow access to public user pages
+                } else if (uri.endsWith(USER_PROFILE)) {
+                    chain.doFilter(request, response); // Allow access to user profile page
+                } else {
+                    res.sendRedirect(req.getContextPath() + HOME); // Redirect unknown pages to home
+                }
             } else {
-                res.sendRedirect(req.getContextPath() + DASHBOARD);
-            }
-        } else if ("user".equals(userRole)) {
-            // User is logged in
-            if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
-                res.sendRedirect(req.getContextPath() + HOME);
-            } else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(PORTFOLIO)
-                    || uri.endsWith(CONTACT) || uri.endsWith(ORDER_LIST) || uri.endsWith(CART_LIST)) {
-                chain.doFilter(request, response);
-            } else if (uri.endsWith(DASHBOARD) || uri.endsWith(MODIFY_STUDENTS) || uri.endsWith(STUDENT_UPDATE)
-                    || uri.endsWith(ADMIN_ORDER)) {
-                res.sendRedirect(req.getContextPath() + HOME);
-            } else {
-                res.sendRedirect(req.getContextPath() + HOME);
+                // Invalid role or session
+                res.sendRedirect(req.getContextPath() + LOGIN); // Redirect to login if session role is invalid
             }
         } else {
             // Not logged in
             if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT)) {
-                chain.doFilter(request, response);
+                chain.doFilter(request, response); // Allow access to login, register, and home
             } else {
-                res.sendRedirect(req.getContextPath() + LOGIN);
+                res.sendRedirect(req.getContextPath() + REGISTER); // Redirect to register page if not logged in
             }
         }
     }

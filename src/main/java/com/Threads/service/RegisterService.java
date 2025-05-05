@@ -1,52 +1,68 @@
 package com.Threads.service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.Threads.Util.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.sql.*;
 
-import com.Threads.config.Dbconfig;
-import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
+@WebServlet("/registerService")
+public class RegisterService extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-public class RegisterService {
-
-    private Connection dbConn;
-
-    public RegisterService() { 
-        try {
-            this.dbConn = Dbconfig.getDbConnection();
-        } catch (SQLException | ClassNotFoundException ex) {
-            System.err.println("Database connection error: " + ex.getMessage());
-            ex.printStackTrace();
-        }
+    private Connection getConnection() throws SQLException,
+    ClassNotFoundException {
+        String url = "jdbc:mysql://localhost:3316/userdb";
+        String user = "root";
+        String pass = "";
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection(url, user, pass);
     }
 
-    public boolean registerUser(String role, String username, String password, String firstName, String lastName,
-                                String email, String phone, String address) {
+    @Override
+    protected void doPost(HttpServletRequest request,HttpServletResponse response)
+            throws ServletException, IOException {
 
-        if (dbConn == null) {
-            System.err.println("Database connection is not available.");
-            return false;
-        }
+        String role = request.getParameter("Role");
+        String username = request.getParameter("Username");
+        String password = request.getParameter("Password");
+        String firstName = request.getParameter("FirstName");
+        String lastName = request.getParameter("LastName");
+        String email = request.getParameter("Email");
+        String phone = request.getParameter("Phone");
+        String address = request.getParameter("Address");
 
-        String query = "INSERT INTO User (Role, UserName, UserPassword, FirstName, LastName, Email, PhoneNumber, Address) "
-                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        // Encrypt the password before storing it
+        String encryptedPassword = PasswordUtil.encrypt(username, password);
 
-        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
-            stmt.setString(1, role); // Usually "user"
-            stmt.setString(2, username);
-            stmt.setString(3, password);
-            stmt.setString(4, firstName);
-            stmt.setString(5, lastName);
-            stmt.setString(6, email);
-            stmt.setString(7, phone);
-            stmt.setString(8, address);
+        try (Connection conn = getConnection()) {
+            String query = "INSERT INTO users (role, username,password, first_name, last_name, email, phone, address) "
+                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, role);
+                stmt.setString(2, username);
+                stmt.setString(3, encryptedPassword);
+                stmt.setString(4, firstName);
+                stmt.setString(5, lastName);
+                stmt.setString(6, email);
+                stmt.setString(7, phone);
+                stmt.setString(8, address);
 
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error during user registration: " + e.getMessage());
+                int result = stmt.executeUpdate();
+
+                if (result > 0) {
+                    response.sendRedirect("login.jsp");
+                } else {
+                    request.setAttribute("error", "Registration failed.");
+
+                    request.getRequestDispatcher("register.jsp").forward(request,response);
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            request.setAttribute("error", "Server error: " + e.getMessage());
+            request.getRequestDispatcher("register.jsp").forward(request,response);
         }
     }
-
 }

@@ -22,7 +22,7 @@ public class AuthenticationFilter implements Filter {
     private static final String REGISTER = "/register";
     private static final String HOME = "/home";
     private static final String ROOT = "/";
-    private static final String DASHBOARD = "/dashboard";
+    private static final String DASHBOARD = "/Dashboard";
     private static final String ADD_NEW_PRODUCT = "/addnewProduct";
     private static final String PRODUCT_LIST = "/ProductList";
     private static final String RECENT_ORDERS = "/RecentOrders";
@@ -90,12 +90,14 @@ public class AuthenticationFilter implements Filter {
                 res.sendRedirect(req.getContextPath() + LOGIN); // Redirect to login if session role is invalid
             }
         } else {
-            // Not logged in
-            if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT)) {
-                chain.doFilter(request, response); // Allow access to login, register, and home
-            } else {
-                res.sendRedirect(req.getContextPath() + REGISTER); // Redirect to register page if not logged in
-            }
+        	// Not logged in
+        	if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT)
+        	    || uri.endsWith(ABOUT_US) || uri.endsWith(CONTACT_US) || uri.endsWith(FOUNDATION)
+        	    || uri.endsWith(TERMS) || uri.endsWith(PRODUCTS) || uri.endsWith(PRODUCT_DETAILS)) {
+        	    chain.doFilter(request, response); // Allow access to public pages
+        	} else {
+        	    res.sendRedirect(req.getContextPath() + LOGIN); // Redirect to login page if accessing protected routes
+        	}
         }
     }
 

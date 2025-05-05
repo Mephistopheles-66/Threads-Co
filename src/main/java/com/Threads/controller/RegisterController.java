@@ -6,7 +6,6 @@ import com.Threads.Util.ValidationUtil;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
@@ -16,11 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 @WebServlet(asyncSupported = true, urlPatterns = { "/register" })
-@MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
-    maxFileSize = 1024 * 1024 * 10,       // 10MB
-    maxRequestSize = 1024 * 1024 * 50     // 50MB
-)
 public class RegisterController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -29,74 +23,66 @@ public class RegisterController extends HttpServlet {
             throws ServletException, IOException {
 
         // 📥 Form Parameters
-        String role = request.getParameter("role");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("retype_password");
-        String firstName = request.getParameter("firstname");
-        String lastName = request.getParameter("lastname");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        Part imagePart = request.getPart("profile_picture");
+        String Role = request.getParameter("Role");
+        String UserName = request.getParameter("UserName");
+        String UserPassword = request.getParameter("UserPassword");
+        String FirstName = request.getParameter("FirstName");
+        String LastName = request.getParameter("LastName");
+        String Email = request.getParameter("Email");
+        String PhoneNumber = request.getParameter("PhoneNumber");
+        String Address = request.getParameter("Address");
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/pages/register.jsp");
 
-        // 🛡️ Validations
-        if (ValidationUtil.isNullOrEmpty(role)) {
+        // ✅ Validations
+        if (ValidationUtil.isNullOrEmpty(Role)) {
             request.setAttribute("status", "Role is required");
             dispatcher.forward(request, response);
             return;
         }
 
-        if (!ValidationUtil.isAlphanumericStartingWithLetter(username)) {
+        if (!ValidationUtil.isAlphanumericStartingWithLetter(UserName)) {
             request.setAttribute("status", "Username must start with a letter and be alphanumeric");
             dispatcher.forward(request, response);
             return;
         }
 
-        if (!ValidationUtil.isValidEmail(email)) {
+        if (!ValidationUtil.isValidEmail(Email)) {
             request.setAttribute("status", "Invalid email format");
             dispatcher.forward(request, response);
             return;
         }
 
-        if (!ValidationUtil.isValidPassword(password)) {
+        if (!ValidationUtil.isValidPassword(UserPassword)) {
             request.setAttribute("status", "Password must be at least 8 characters, include uppercase, number, and special character");
             dispatcher.forward(request, response);
             return;
         }
 
-        if (!ValidationUtil.doPasswordsMatch(password, confirmPassword)) {
-            request.setAttribute("status", "Passwords do not match");
-            dispatcher.forward(request, response);
-            return;
-        }
-
-        if (ValidationUtil.isNullOrEmpty(firstName) || ValidationUtil.isNullOrEmpty(lastName)) {
+        if (ValidationUtil.isNullOrEmpty(FirstName) || ValidationUtil.isNullOrEmpty(LastName)) {
             request.setAttribute("status", "First name and last name are required");
             dispatcher.forward(request, response);
             return;
         }
 
-        if (!ValidationUtil.isValidPhoneNumber(phone)) {
+        if (!ValidationUtil.isValidPhoneNumber(PhoneNumber)) {
             request.setAttribute("status", "Invalid Nepalese phone number");
             dispatcher.forward(request, response);
             return;
         }
 
-        if (!ValidationUtil.isValidImageExtension(imagePart)) {
-            request.setAttribute("status", "Invalid image file type (only JPG, JPEG, PNG, GIF allowed)");
-            dispatcher.forward(request, response);
-            return;
-        }
-
-        // 📦 DB Operation
+        // ✅ DB Operation
         try (Connection con = Dbconfig.getDbConnection()) {
 
-            // 🔍 Check username exists
-            PreparedStatement checkStmt = con.prepareStatement("SELECT * FROM users WHERE username = ?");
-            checkStmt.setString(1, username);
+            if (con == null || con.isClosed()) {
+                request.setAttribute("status", "Database connection error");
+                dispatcher.forward(request, response);
+                return;
+            }
+
+            // Check if username already exists
+            PreparedStatement checkStmt = con.prepareStatement("SELECT * FROM users WHERE UserName = ?");
+            checkStmt.setString(1, UserName);
             ResultSet rs = checkStmt.executeQuery();
 
             if (rs.next()) {
@@ -105,34 +91,35 @@ public class RegisterController extends HttpServlet {
                 return;
             }
 
-            // 🔐 Encrypt password
-            String encryptedPassword = PasswordUtil.encrypt(username, password);
+            // Encrypt password
+            String encryptedPassword = PasswordUtil.encrypt(UserName, UserPassword);
 
-            // 💾 Save to DB
+            // Insert user data
             PreparedStatement pst = con.prepareStatement(
-                "INSERT INTO users (role, username, password, first_name, last_name, email, phone, address) " +
+                "INSERT INTO users (Role, UserName, UserPassword, FirstName, LastName, Email, PhoneNumber, Address) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
             );
-            pst.setString(1, role);
-            pst.setString(2, username);
+            pst.setString(1, Role);
+            pst.setString(2, UserName);
             pst.setString(3, encryptedPassword);
-            pst.setString(4, firstName);
-            pst.setString(5, lastName);
-            pst.setString(6, email);
-            pst.setString(7, phone);
-            pst.setString(8, address);
+            pst.setString(4, FirstName);
+            pst.setString(5, LastName);
+            pst.setString(6, Email);
+            pst.setString(7, PhoneNumber);
+            pst.setString(8, Address);
 
             int rowCount = pst.executeUpdate();
+            System.out.println("Inserted rows: " + rowCount); // Debug
 
             if (rowCount > 0) {
-                request.getSession().setAttribute("username", username);
+                request.getSession().setAttribute("UserName", UserName);
                 request.setAttribute("status", "Registration successful! You can now log in.");
             } else {
                 request.setAttribute("status", "Registration failed. Please try again.");
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Always log full exception
             request.setAttribute("status", "Server error: " + e.getMessage());
         }
 

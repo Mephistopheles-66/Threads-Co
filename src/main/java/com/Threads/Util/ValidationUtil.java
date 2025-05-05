@@ -1,10 +1,6 @@
 package com.Threads.Util;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.regex.Pattern;
-
-import jakarta.servlet.http.Part;
 
 public class ValidationUtil {
 
@@ -63,30 +59,4 @@ public class ValidationUtil {
         return password != null && password.matches(passwordRegex);
     }
 
-    /**
-     * Validates if uploaded file has a valid image extension.
-     */
-    public static boolean isValidImageExtension(Part imagePart) {
-        if (imagePart == null || isNullOrEmpty(imagePart.getSubmittedFileName())) {
-            return false;
-        }
-        String fileName = imagePart.getSubmittedFileName().toLowerCase();
-        return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")
-                || fileName.endsWith(".png") || fileName.endsWith(".gif");
-    }
-
-    /**
-     * Validates whether two passwords match exactly.
-     */
-    public static boolean doPasswordsMatch(String password, String retypePassword) {
-        return password != null && password.equals(retypePassword);
-    }
-
-    /**
-     * Checks if the user is at least 16 years old based on their date of birth.
-     */
-    public static boolean isAgeAtLeast16(LocalDate dob) {
-        if (dob == null) return false;
-        return Period.between(dob, LocalDate.now()).getYears() >= 16;
-    }
 }

@@ -49,7 +49,7 @@
     <div class="hero-text">
       <h2>Make your <br />Fashion <br />look</h2>
       <p>More Charming</p>
-      <button>Explore</button>
+      <a href="${pageContext.request.contextPath}/Products.jsp"><button>Explore</button></a>
     </div>
     <img src="${pageContext.request.contextPath}/Resources/images/model2.jpg" alt="Model 2" class ="hero-img">
   </section>

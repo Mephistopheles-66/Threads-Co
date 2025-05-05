@@ -24,30 +24,30 @@ public class RegisterService extends HttpServlet {
     protected void doPost(HttpServletRequest request,HttpServletResponse response)
             throws ServletException, IOException {
 
-        String role = request.getParameter("Role");
-        String username = request.getParameter("Username");
-        String password = request.getParameter("Password");
-        String firstName = request.getParameter("FirstName");
-        String lastName = request.getParameter("LastName");
-        String email = request.getParameter("Email");
-        String phone = request.getParameter("Phone");
-        String address = request.getParameter("Address");
+        String Role = request.getParameter("Role");
+        String UserName = request.getParameter("UserName");
+        String UserPassword = request.getParameter("UserPassword");
+        String FirstName = request.getParameter("FirstName");
+        String LastName = request.getParameter("LastName");
+        String Email = request.getParameter("Email");
+        String PhoneNumber = request.getParameter("PhoneNumber");
+        String Address = request.getParameter("Address");
 
         // Encrypt the password before storing it
-        String encryptedPassword = PasswordUtil.encrypt(username, password);
+        String encryptedPassword = PasswordUtil.encrypt(UserName, UserPassword);
 
         try (Connection conn = getConnection()) {
-            String query = "INSERT INTO users (role, username,password, first_name, last_name, email, phone, address) "
+            String query = "INSERT INTO user (Role, UserName, UserPassword, FirstName, LastName, Email, PhoneNumber, Address) "
                          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, role);
-                stmt.setString(2, username);
+                stmt.setString(1, Role);
+                stmt.setString(2, UserName);
                 stmt.setString(3, encryptedPassword);
-                stmt.setString(4, firstName);
-                stmt.setString(5, lastName);
-                stmt.setString(6, email);
-                stmt.setString(7, phone);
-                stmt.setString(8, address);
+                stmt.setString(4, FirstName);
+                stmt.setString(5, LastName);
+                stmt.setString(6, Email);
+                stmt.setString(7, PhoneNumber);
+                stmt.setString(8, Address);
 
                 int result = stmt.executeUpdate();
 

@@ -16,17 +16,17 @@
 
   <!-- Sidebar Navigation -->
   <nav class="sidebar">
-    <a href="Home.html"><div class="logo">Threads & Co.</div></a>
+    <a href="<%= request.getContextPath() %>/Home.jsp"><div class="logo">Threads & Co.</div></a>
     <ul>
       <li>
         <a href="#" id="menu-toggle"><i class="fas fa-bars"></i> Menu</a>
       </li>
       <div id="menu-items" class="collapsed">
-        <li><a href="product.html"><i class="fas fa-box"></i> Products</a></li>
+        <li><a href="<%= request.getContextPath() %>/Products.jsp"><i class="fas fa-box"></i> Products</a></li>
         <li><a href="#"><i class="fas fa-ruler-combined"></i> Size Guide</a></li>
-        <li><a href="Brandvision.html"><i class="fas fa-lightbulb"></i> Brand Vision</a></li>
-        <li><a href="Foundation.html"><i class="fas fa-hands-helping"></i> Foundation</a></li>
-        <li><a href="terms.html"><i class="fas fa-file-contract"></i> Terms</a></li>
+        <li><a href="<%= request.getContextPath() %>/Brandvision.jsp"><i class="fas fa-lightbulb"></i> Brand Vision</a></li>
+        <li><a href="<%= request.getContextPath() %>/Foundation.jsp"><i class="fas fa-hands-helping"></i> Foundation</a></li>
+        <li><a href="<%= request.getContextPath() %>/terms.jsp"><i class="fas fa-file-contract"></i> Terms</a></li>
       </div>
     </ul>
   </nav>
@@ -34,8 +34,8 @@
   <!-- Top Right Buttons -->
   <div class="top-right">
     <button class="btn"><i class="fas fa-shopping-cart"></i> Cart</button>
-    <a href="login.html"><button class="btn"><i class="fas fa-sign-in-alt"></i> Login</button></a>
-    <a href="register.html"><button class="btn"><i class="fas fa-user"></i> Register</button></a>
+    <a href="<%= request.getContextPath() %>/login.jsp"><button class="btn"><i class="fas fa-sign-in-alt"></i> Login</button></a>
+    <a href="<%= request.getContextPath() %>/Register.jsp"><button class="btn"><i class="fas fa-user"></i> Register</button></a>
   </div>
 
   <header class="header">
@@ -50,8 +50,8 @@
 
       <div class="product-grid">
         <div class="product-card">
-          <a href="product_detail.html">
-            <img src="Resources/images/tshirt.png" alt="Cotton T-Shirt" />
+          <a href="<%= request.getContextPath() %>/product_detail.jsp">
+            <img src="<%= request.getContextPath() %>/Resources/images/tshirt.png" alt="Cotton T-Shirt" />
             <div class="product-info">
               <h3>Cotton T-Shirt</h3>
               <p class="price">$24.99</p>
@@ -60,8 +60,8 @@
         </div>
 
         <div class="product-card">
-          <a href="product_detail.html">
-            <img src="Resources/images/pant.webp" alt="Linen Pants" />
+          <a href="<%= request.getContextPath() %>/product_detail.jsp">
+            <img src="<%= request.getContextPath() %>/Resources/images/Pant.png" alt="Linen Pants" />
             <div class="product-info">
               <h3>Linen Pants</h3>
               <p class="price">$59.99</p>
@@ -70,44 +70,26 @@
         </div>
 
         <div class="product-card">
-          <a href="product_detail.html">
-            <img src="./DSC00222.JPG" alt="Summer Dress" />
+          <a href="<%= request.getContextPath() %>/product_detail.jsp">
+            <img src="<%= request.getContextPath() %>/Resources/images/Denim.png" alt="Denim Jacket" />
             <div class="product-info">
-              <h3>Summer Dress</h3>
+              <h3>Denim Jacket</h3>
               <p class="price">$79.99</p>
             </div>
           </a>
         </div>
 
         <div class="product-card">
-          <a href="product_detail.html">
-            <img src="./DSC00267.JPG" alt="Classic Denim Jacket" />
+          <a href="<%= request.getContextPath() %>/product_detail.jsp">
+            <img src="<%= request.getContextPath() %>/Resources/images/Hoodie.png" alt="Classic Denim Jacket" />
             <div class="product-info">
-              <h3>Classic Denim Jacket</h3>
+              <h3>Hoodie</h3>
               <p class="price">$89.99</p>
             </div>
           </a>
         </div>
 
-        <div class="product-card">
-          <a href="product_detail.html">
-            <img src="./DSC00279.JPG" alt="Silk Scarf" />
-            <div class="product-info">
-              <h3>Silk Scarf</h3>
-              <p class="price">$39.99</p>
-            </div>
-          </a>
-        </div>
 
-        <div class="product-card">
-          <a href="product_detail.html">
-            <img src="./DSC00310.JPG" alt="Wool Sweater" />
-            <div class="product-info">
-              <h3>Wool Sweater</h3>
-              <p class="price">$69.99</p>
-            </div>
-          </a>
-        </div>
       </div>
     </div>
   </main>

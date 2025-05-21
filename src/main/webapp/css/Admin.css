@@ -1,0 +1,290 @@
+@charset "UTF-8";
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f2e9e1;
+  color: #1e1e1e;
+  padding: 20px;
+}
+
+/* Admin Header */
+.admin-header {
+  background-color: #d1dccd;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: "Playfair Display", serif;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.header-left {
+  font-size: 24px;
+  font-weight: bold;
+  flex: 1;
+  margin-left: 200px;
+}
+
+.header-center {
+  font-size: 18px;
+  flex: 2;
+  text-align: center;
+  color: #444;
+}
+
+.header-right-notification,
+.header-right-user {
+  flex: 0 0 auto;
+  margin-left: 15px;
+}
+
+.notification-icon,
+.user-icon {
+  font-size: 20px;
+  color: #4b6043;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.notification-icon:hover,
+.user-icon:hover {
+  transform: scale(1.2);
+  color: #ffff;
+}
+
+.user-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.user-link:hover .user-icon {
+  transform: scale(1.1);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.user-icon {
+  font-size: 20px;
+  color: #3c4e3a;
+  cursor: pointer;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+  position: fixed;
+  top: 5px;
+  left: 30px;
+  width: 200px;
+  padding: 20px;
+  z-index: 2;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 5px 5px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  transform: translateX(5px);
+}
+
+.collapsed {
+  display: none;
+}
+
+/* === Cards Section === */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+  margin-left: 300px;
+}
+
+.card {
+  background: linear-gradient(145deg, #d8e4d2, #c2cfc0);
+  padding: 25px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card i {
+  font-size: 34px;
+  margin-bottom: 15px;
+  color: #3e5c3a;
+}
+
+.card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #2c3e2c;
+}
+
+.card p {
+  font-size: 18px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* Table Section */
+.table-section,
+.product-section {
+  margin-top: 100px;
+  margin-bottom: 40px;
+}
+
+.table-section h2,
+.product-section h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background-color: #b7c9b1;
+  font-weight: 600;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 12px;
+}
+
+.shipped {
+  background-color: #3498db;
+}
+
+.delivered {
+  background-color: #27ae60;
+}
+
+.pending {
+  background-color: #e67e22;
+}
+
+/* Add Product Form */
+.add-product-section {
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+  max-width: 650px;
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-product-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.add-product-section h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 32px;
+  color: #4b6043;
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.add-product-form {
+  display: grid;
+  gap: 25px;
+}
+
+.add-product-form label {
+  font-size: 18px;
+  color: #444;
+  font-weight: 600;
+}
+
+.add-product-form input {
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease, border 0.3s ease;
+  width: 100%;
+}
+
+.add-product-form input:focus {
+  background-color: #fff;
+  border-color: #4b6043;
+}
+
+.add-product-form input::placeholder {
+  color: #aaa;
+}
+
+.add-product-form button {
+  background-color: #4b6043;
+  color: white;
+  padding: 18px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  width: 100%;
+}
+
+.add-product-form button:hover {
+  background-color: #3c4e3a;
+}

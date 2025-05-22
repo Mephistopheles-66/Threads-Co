@@ -1,92 +1,55 @@
 package com.Threads.controller;
 
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.Threads.model.UserModel;
 import com.Threads.service.RegisterService;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-import java.io.IOException;
 
-@WebServlet(urlPatterns = { "/register" })
+@WebServlet("/register")
 public class RegisterController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private final RegisterService registerService = new RegisterService();
+    
+    private RegisterService registerService;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Forward to Register.jsp in the ROOT directory (not WEB-INF/pages)
-        request.getRequestDispatcher("/Register.jsp").forward(request, response);
+    public void init() {
+        registerService = new RegisterService();
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        
-        // Extract form parameters
-        String role = request.getParameter("Role");
-        String userName = request.getParameter("UserName");
-        String userPassword = request.getParameter("UserPassword");
-        String firstName = request.getParameter("FirstName");
-        String lastName = request.getParameter("LastName");
-        String email = request.getParameter("Email");
-        String phoneNumber = request.getParameter("PhoneNumber");
-        String address = request.getParameter("Address");
-        
-        // Validate required fields
-        if (userName == null || userName.trim().isEmpty() ||
-            userPassword == null || userPassword.trim().isEmpty() ||
-            firstName == null || firstName.trim().isEmpty() ||
-            lastName == null || lastName.trim().isEmpty() ||
-            email == null || email.trim().isEmpty() ||
-            phoneNumber == null || phoneNumber.trim().isEmpty() ||
-            address == null || address.trim().isEmpty() ||
-            role == null || role.trim().isEmpty()) {
-            
-            request.setAttribute("status", "Please fill all the required fields");
-            request.getRequestDispatcher("/Register.jsp").forward(request, response);
-            return;
-        }
-        
-        // Create user model
-        UserModel user = new UserModel();
-        user.setRole(role);
-        user.setUserName(userName);
-        user.setUserPassword(userPassword);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPhoneNumber(phoneNumber);
-        user.setAddress(address);
+        request.getRequestDispatcher("Register.jsp").forward(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        String role = request.getParameter("role");
+        String userName = request.getParameter("userName");
+        String userPassword = request.getParameter("userPassword");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String address = request.getParameter("address");
+
+        UserModel user = new UserModel(role, userName, userPassword, firstName, lastName, email, phoneNumber, address);
 
         try {
-            // Validate username and email uniqueness
-            if (registerService.isUsernameExists(userName)) {
-                request.setAttribute("status", "Username already exists. Please choose another one.");
-                request.getRequestDispatcher("/Register.jsp").forward(request, response);
-                return;
-            }
-            
-            if (registerService.isEmailExists(email)) {
-                request.setAttribute("status", "Email already registered. Please use another email.");
-                request.getRequestDispatcher("/Register.jsp").forward(request, response);
-                return;
-            }
-            
-            // Register the user
-            if (registerService.registerUser(user)) {
-                // Set success message in session for display after redirect
-                request.getSession().setAttribute("registrationSuccess", "Registration successful! You can now log in.");
-                response.sendRedirect(request.getContextPath() + "/login");
-                return;
+            boolean isRegistered = registerService.registerUser(user);
+            if (isRegistered) {
+                request.setAttribute("status", "success");
             } else {
-                request.setAttribute("status", "Registration failed. Please try again.");
-                request.getRequestDispatcher("/Register.jsp").forward(request, response);
+                request.setAttribute("status", "failed");
             }
         } catch (Exception e) {
-            request.setAttribute("status", "Error: " + e.getMessage());
-            request.getRequestDispatcher("/Register.jsp").forward(request, response);
+            e.printStackTrace();
+            request.setAttribute("status", "error");
         }
+
+        request.getRequestDispatcher("Register.jsp").forward(request, response);
     }
 }

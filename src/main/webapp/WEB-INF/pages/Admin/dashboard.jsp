@@ -22,11 +22,15 @@
     <div class="header-left">Threads & Co.</div>
     <div class="header-center">Welcome to the Admin Dashboard</div>
     <div class="header-right">
-      <i class="fas fa-bell notification-icon"></i>
-      <a href="adminprofile.html" class="user-link">
-        <i class="fas fa-user user-icon"></i>
-      </a>
-    </div>
+  <i class="fas fa-bell notification-icon"></i>
+  <a href="adminprofile.html" class="user-link">
+    <i class="fas fa-user user-icon"></i>
+  </a>
+  <a href="?action=logout" class="user-link" title="Logout">
+    <i class="fas fa-sign-out-alt"></i>
+  </a>
+</div>
+
   </header>
 
   <!-- Sidebar Navigation -->
@@ -39,7 +43,7 @@
         <li><a href="AdminDashboard.html"><i class="fas fa-lightbulb"></i>Dashboard</a></li>
         <li><a href="adminProduclist.html"><i class="fas fa-box"></i> Products List</a></li>
         <li><a href="adminOrderlist.html"><i class="fas fa-ruler-combined"></i> Recent Orders</a></li>
-        <li><a href="addnewproduct.html"><i class="fas fa-shopping-cart"></i> Add New Product</a></li>
+        <li><a href="addProductForm"><i class="fas fa-shopping-cart"></i> Add New Product</a></li>
       </div>
     </ul>
   </nav>

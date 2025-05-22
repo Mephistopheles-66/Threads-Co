@@ -23,12 +23,12 @@
         <a href="#" id="menu-toggle"><i class="fas fa-bars"></i> Menu</a>
       </li>
       <div id="menu-items" class="collapsed">
-        <li><a href="#"><i class="fas fa-box"></i> Products</a></li>
+          <li><a href="Product.jsp"><i class="fas fa-box"></i> Products</a></li>
         <li><a href="#"><i class="fas fa-ruler-combined"></i> Size Guide</a></li>
-        <li><a href="#"><i class="fas fa-lightbulb"></i> Brand Vision</a></li>
-        <li><a href="#"><i class="fas fa-hands-helping"></i> Foundation</a></li>
-        <li><a href="#"><i class="fas fa-file-contract"></i> Terms</a></li>
-        <li><a href="#"><i class="fas fa-truck"></i> Shipping Prices</a></li>
+        <li><a href="brandvision.jsp"><i class="fas fa-lightbulb"></i> Brand Vision</a></li>
+        <li><a href="Foundation.jsp"><i class="fas fa-hands-helping"></i> Foundation</a></li>
+        <li><a href="Terms.jsp"><i class="fas fa-file-contract"></i> Terms</a></li>
+        <li><a href="#"><i class="fas fa-truck"></i> Shipping Prices</a></li>	
       </div>
     </ul>
   </nav>
@@ -36,8 +36,8 @@
   <!-- Top Right Buttons -->
   <div class="top-right">
     <button class="btn"><i class="fas fa-shopping-cart"></i> Cart</button>
-    <a href="login.html"><button class="btn"><i class="fas fa-sign-in-alt"></i> Login</button></a>
-    <a href="register.html"><button class="btn"><i class="fas fa-user"></i> Register</button></a>
+    <a href="<%= request.getContextPath() %>/login.jsp"><button class="btn"><i class="fas fa-sign-in-alt"></i> Login</button></a>
+    <a href="<%= request.getContextPath() %>/Register.jsp"><button class="btn"><i class="fas fa-user"></i> Register</button></a>
   </div>
 
   <!-- Contact Section -->

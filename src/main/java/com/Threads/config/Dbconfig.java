@@ -5,32 +5,25 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Dbconfig {
-    private static final String DB_NAME = "threadsco";
-    private static final String URL = "jdbc:mysql://localhost:3306/" + DB_NAME;
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/threadsco";
+    private static final String JDBC_USER = "root";  // replace with your MySQL username
+    private static final String JDBC_PASSWORD = "";  // replace with your MySQL password
 
-    public static Connection getDbConnection() throws SQLException, ClassNotFoundException {
+    static {
         try {
-            // Load the driver explicitly using Class.forName
             Class.forName("com.mysql.cj.jdbc.Driver");
-            
-            // Create the connection
-            Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            
-            // Test the connection
-            if (conn != null && !conn.isClosed()) {
-                System.out.println("Database connection successful!");
-                return conn;
-            } else {
-                throw new SQLException("Failed to establish database connection.");
-            }
         } catch (ClassNotFoundException e) {
-            System.err.println("MySQL JDBC Driver not found! Add the MySQL connector JAR to your project.");
-            throw e;
-        } catch (SQLException e) {
-            System.err.println("Database connection error: " + e.getMessage());
-            throw e;
+            e.printStackTrace();
         }
+    }
+
+    // Method for ProductService
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+    }
+    
+    // Method for LoginService
+    public static Connection getDbConnection() throws SQLException {
+        return getConnection();
     }
 }
